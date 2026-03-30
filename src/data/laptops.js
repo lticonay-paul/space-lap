@@ -1,0 +1,14 @@
+export const laptops = [
+  { id: 1, name: "Lenovo IdeaPad 3", brand: "Lenovo", price: 1899, ram: 8, ssd: 256, stock: 3, offer: false, image: "https://placehold.co/300x200/111/fff?text=Lenovo+IdeaPad", description: "Ideal para estudiantes, procesador Intel i5" },
+  { id: 2, name: "HP Pavilion 15", brand: "HP", price: 2299, ram: 16, ssd: 512, stock: 2, offer: true, image: "https://placehold.co/300x200/111/fff?text=HP+Pavilion", description: "Gran rendimiento para trabajo y diseño" },
+  { id: 3, name: "ASUS VivoBook 15", brand: "ASUS", price: 1699, ram: 8, ssd: 512, stock: 1, offer: false, image: "https://placehold.co/300x200/111/fff?text=ASUS+VivoBook", description: "Delgada y liviana para el día a día" },
+  { id: 4, name: "Acer Aspire 5", brand: "Acer", price: 1599, ram: 8, ssd: 256, stock: 2, offer: true, image: "https://placehold.co/300x200/111/fff?text=Acer+Aspire", description: "Excelente relación calidad-precio" },
+  { id: 5, name: "Dell Inspiron 15", brand: "Dell", price: 2599, ram: 16, ssd: 512, stock: 1, offer: false, image: "https://placehold.co/300x200/111/fff?text=Dell+Inspiron", description: "Confiable y potente para profesionales" },
+  { id: 6, name: "MacBook Air M1", brand: "Apple", price: 4999, ram: 8, ssd: 256, stock: 1, offer: false, image: "https://placehold.co/300x200/111/fff?text=MacBook+Air", description: "El más rápido de su categoría, batería todo el día" },
+  { id: 7, name: "Lenovo ThinkPad E14", brand: "Lenovo", price: 2899, ram: 16, ssd: 512, stock: 2, offer: false, image: "https://placehold.co/300x200/111/fff?text=ThinkPad+E14", description: "Para trabajo profesional y empresas" },
+  { id: 8, name: "HP 250 G9", brand: "HP", price: 1499, ram: 8, ssd: 256, stock: 1, offer: true, image: "https://placehold.co/300x200/111/fff?text=HP+250+G9", description: "Económica y funcional para uso básico" },
+  { id: 9, name: "ASUS ROG Strix G15", brand: "ASUS", price: 5499, ram: 16, ssd: 1024, stock: 1, offer: false, image: "https://placehold.co/300x200/111/fff?text=ROG+Strix", description: "Gaming de alto rendimiento, GPU dedicada" },
+  { id: 10, name: "Acer Nitro 5", brand: "Acer", price: 3499, ram: 16, ssd: 512, stock: 2, offer: true, image: "https://placehold.co/300x200/111/fff?text=Acer+Nitro+5", description: "Gaming asequible con buena GPU" },
+  { id: 11, name: "Dell XPS 13", brand: "Dell", price: 5999, ram: 16, ssd: 512, stock: 1, offer: false, image: "https://placehold.co/300x200/111/fff?text=Dell+XPS+13", description: "Premium ultradelgada, pantalla OLED" },
+  { id: 12, name: "Samsung Galaxy Book3", brand: "Samsung", price: 3299, ram: 16, ssd: 512, stock: 1, offer: false, image: "https://placehold.co/300x200/111/fff?text=Galaxy+Book3", description: "Elegante y potente, integración Android" }
+];
