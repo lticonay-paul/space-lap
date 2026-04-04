@@ -169,7 +169,7 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
     const formData = new FormData();
     formData.append("image", archivo);
     try {
-      const res = await fetch("http://localhost:3001/api/laptops/upload", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/laptops/upload`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` },
         body: formData,
@@ -185,8 +185,8 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
   const handleGuardar = async () => {
     setGuardando(true);
     const url = editando
-      ? `http://localhost:3001/api/laptops/${laptop.id}`
-      : "http://localhost:3001/api/laptops";
+      ? `https://space-lap-backend.onrender.com/api/laptops/${laptop.id}`
+      : "https://space-lap-backend.onrender.com/api/laptops";
     const method = editando ? "PUT" : "POST";
     try {
       await fetch(url, {
