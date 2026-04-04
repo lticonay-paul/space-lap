@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { laptops } from "../data/laptops";
+import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 
 const brands = ["Todas", "Lenovo", "HP", "ASUS", "Acer", "Dell", "Apple", "Samsung"];
@@ -11,6 +10,22 @@ export default function Catalog() {
   const [maxPrice, setMaxPrice] = useState(6000);
   const [onlyOffers, setOnlyOffers] = useState(false);
 
+  const [laptops, setLaptops] = useState([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/laptops`)
+    .then(res => res.json())
+    .then(data => {
+      setLaptops(data);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error("Error al cargar laptops:", err);
+      setLoading(false);
+    });
+}, []);
+
   const filtered = laptops.filter(l => {
     const matchSearch = l.name.toLowerCase().includes(search.toLowerCase()) || l.brand.toLowerCase().includes(search.toLowerCase());
     const matchBrand = brand === "Todas" || l.brand === brand;
@@ -19,7 +34,11 @@ export default function Catalog() {
     const matchOffer = !onlyOffers || l.offer;
     return matchSearch && matchBrand && matchRam && matchPrice && matchOffer;
   });
-
+if (loading) return (
+  <div style={{ minHeight: "100vh", background: "#0a0a0a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <p style={{ color: "#555" }}>Cargando laptops...</p>
+  </div>
+);
   return (
     <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#fff" }}>
       <div style={{ textAlign: "center", padding: "3rem 2rem 2rem" }}>

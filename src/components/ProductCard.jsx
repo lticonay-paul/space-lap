@@ -10,7 +10,7 @@ export default function ProductCard({ laptop }) {
       onMouseLeave={e => e.currentTarget.style.borderColor = "#222"}
     >
       <div style={{ position: "relative" }}>
-        <img src={laptop.image} alt={laptop.name} style={{ width: "100%", height: "160px", objectFit: "cover", display: "block" }} />
+        <img src={laptop.image_url || laptop.image} alt={laptop.name} style={{ width: "100%", height: "200px", objectFit: "contain", background: "#1a1a1a", display: "block", padding: "1rem" }} />
         {laptop.offer && (
           <span style={{ position: "absolute", top: 10, left: 10, background: "#ef4444", color: "#fff", padding: "3px 10px", borderRadius: "20px", fontSize: "0.72rem", fontWeight: 700 }}>
             OFERTA
