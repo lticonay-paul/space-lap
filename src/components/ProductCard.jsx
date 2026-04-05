@@ -1,8 +1,10 @@
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ laptop }) {
   const { addToCart, cart } = useCart();
   const inCart = cart.find(i => i.id === laptop.id);
+  const navigate = useNavigate();
 
   return (
     <div style={{
@@ -41,6 +43,11 @@ export default function ProductCard({ laptop }) {
           <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.ssd}GB SSD</span>
           <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>Stock: {laptop.stock}</span>
         </div>
+
+        <div
+          onClick={() => navigate(`/laptop/${laptop.id}`)}
+          style={{ ..., cursor: "pointer" }}
+        ></div>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>S/ {Number(laptop.price).toLocaleString()}</span>
