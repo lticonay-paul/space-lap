@@ -1,17 +1,22 @@
-import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ laptop }) {
   const { addToCart, cart } = useCart();
-  const inCart = cart.find(i => i.id === laptop.id);
   const navigate = useNavigate();
+  const inCart = cart.find(i => i.id === laptop.id);
 
   return (
-    <div style={{
-      background: "#111", border: "1px solid #222",
-      borderRadius: "12px", overflow: "hidden",
-      transition: "border-color 0.2s"
-    }}
+    <div
+      onClick={() => navigate(`/laptop/${laptop.id}`)}
+      style={{
+        background: "#111",
+        border: "1px solid #222",
+        borderRadius: "12px",
+        overflow: "hidden",
+        transition: "border-color 0.2s",
+        cursor: "pointer"
+      }}
       onMouseEnter={e => e.currentTarget.style.borderColor = "#444"}
       onMouseLeave={e => e.currentTarget.style.borderColor = "#222"}
     >
@@ -44,22 +49,10 @@ export default function ProductCard({ laptop }) {
           <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>Stock: {laptop.stock}</span>
         </div>
 
-        <div
-          onClick={() => navigate(`/laptop/${laptop.id}`)}
-          style={{ 
-              background: "#111",
-              border: "1px solid #222",
-              borderRadius: "12px",
-              overflow: "hidden",
-              transition: "border-color 0.2s",
-              cursor: "pointer"
-            }}
-          ></div>
-
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>S/ {Number(laptop.price).toLocaleString()}</span>
           <button
-            onClick={() => addToCart(laptop)}
+            onClick={e => { e.stopPropagation(); addToCart(laptop); }}
             disabled={!!inCart}
             style={{
               background: inCart ? "#1a1a1a" : "#fff",
