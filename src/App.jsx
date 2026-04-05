@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import Carrito from "./pages/Carrito";
 import LaptopDetail from "./pages/LaptopDetail";
+
 export default function App() {
   return (
     <CartProvider>

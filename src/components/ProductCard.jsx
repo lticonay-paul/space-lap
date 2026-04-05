@@ -46,8 +46,15 @@ export default function ProductCard({ laptop }) {
 
         <div
           onClick={() => navigate(`/laptop/${laptop.id}`)}
-          style={{ ..., cursor: "pointer" }}
-        ></div>
+          style={{ 
+              background: "#111",
+              border: "1px solid #222",
+              borderRadius: "12px",
+              overflow: "hidden",
+              transition: "border-color 0.2s",
+              cursor: "pointer"
+            }}
+          ></div>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ color: "#fff", fontWeight: 700, fontSize: "1.1rem" }}>S/ {Number(laptop.price).toLocaleString()}</span>
