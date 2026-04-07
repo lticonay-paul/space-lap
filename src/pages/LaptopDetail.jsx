@@ -127,16 +127,51 @@ export default function LaptopDetail() {
             {/* Specs */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginBottom: "1.5rem" }}>
               {[
-                ["RAM", `${laptop.ram} GB`],
-                ["SSD", `${laptop.ssd} GB`],
-                ["Stock", `${laptop.stock} unidad${laptop.stock !== 1 ? "es" : ""}`],
-                ["Estado", laptop.offer ? "En oferta" : "Precio regular"],
-                ...(laptop.specs?.cpu ? [["Procesador", laptop.specs.cpu]] : []),
-                ...(laptop.specs?.pantalla ? [["Pantalla", laptop.specs.pantalla]] : []),
-                ...(laptop.specs?.bateria ? [["Batería", laptop.specs.bateria]] : []),
-                ...(laptop.specs?.peso ? [["Peso", laptop.specs.peso]] : []),
-                ...(laptop.specs?.os ? [["Sistema", laptop.specs.os]] : []),
-              ].map(([label, value]) => (
+  // Solo mostrar RAM y SSD si la categoría es laptops o PCs y tienen valor
+  ...(["laptops","pcs"].includes(laptop.category_slug) && laptop.ram > 0 ? [["RAM", `${laptop.ram} GB`]] : []),
+  ...(["laptops","pcs"].includes(laptop.category_slug) && laptop.ssd > 0 ? [["SSD", `${laptop.ssd} GB`]] : []),
+  ["Stock", `${laptop.stock} unidad${laptop.stock !== 1 ? "es" : ""}`],
+  ["Estado", laptop.offer ? "En oferta" : "Precio regular"],
+  // Specs dinámicas — mostrar todo lo que tenga valor
+  ...(laptop.specs?.cpu ? [["Procesador", laptop.specs.cpu]] : []),
+  ...(laptop.specs?.ram_detalle ? [["RAM", laptop.specs.ram_detalle]] : []),
+  ...(laptop.specs?.ssd_detalle ? [["Almacenamiento", laptop.specs.ssd_detalle]] : []),
+  ...(laptop.specs?.gpu ? [["Tarjeta gráfica", laptop.specs.gpu]] : []),
+  ...(laptop.specs?.pantalla ? [["Pantalla", laptop.specs.pantalla]] : []),
+  ...(laptop.specs?.bateria ? [["Batería", laptop.specs.bateria]] : []),
+  ...(laptop.specs?.peso ? [["Peso", laptop.specs.peso]] : []),
+  ...(laptop.specs?.os ? [["Sistema", laptop.specs.os]] : []),
+  ...(laptop.specs?.color ? [["Color", laptop.specs.color]] : []),
+  ...(laptop.specs?.dimensiones ? [["Dimensiones", laptop.specs.dimensiones]] : []),
+  // Monitores
+  ...(laptop.specs?.tamano ? [["Tamaño", laptop.specs.tamano]] : []),
+  ...(laptop.specs?.resolucion ? [["Resolución", laptop.specs.resolucion]] : []),
+  ...(laptop.specs?.panel ? [["Panel", laptop.specs.panel]] : []),
+  ...(laptop.specs?.hz ? [["Frecuencia", laptop.specs.hz]] : []),
+  ...(laptop.specs?.respuesta ? [["Resp. tiempo", laptop.specs.respuesta]] : []),
+  ...(laptop.specs?.puertos ? [["Puertos", laptop.specs.puertos]] : []),
+  ...(laptop.specs?.curvatura ? [["Curvatura", laptop.specs.curvatura]] : []),
+  // Mouses y teclados
+  ...(laptop.specs?.dpi ? [["DPI", laptop.specs.dpi]] : []),
+  ...(laptop.specs?.conexion ? [["Conexión", laptop.specs.conexion]] : []),
+  ...(laptop.specs?.botones ? [["Botones", laptop.specs.botones]] : []),
+  ...(laptop.specs?.rgb ? [["RGB", laptop.specs.rgb]] : []),
+  ...(laptop.specs?.tipo ? [["Tipo", laptop.specs.tipo]] : []),
+  ...(laptop.specs?.switch ? [["Switch", laptop.specs.switch]] : []),
+  ...(laptop.specs?.layout ? [["Layout", laptop.specs.layout]] : []),
+  ...(laptop.specs?.idioma ? [["Idioma", laptop.specs.idioma]] : []),
+  // Auriculares
+  ...(laptop.specs?.microfono ? [["Micrófono", laptop.specs.microfono]] : []),
+  ...(laptop.specs?.anc ? [["Cancelación ruido", laptop.specs.anc]] : []),
+  // PCs
+  ...(laptop.specs?.motherboard ? [["Placa madre", laptop.specs.motherboard]] : []),
+  ...(laptop.specs?.psu ? [["Fuente de poder", laptop.specs.psu]] : []),
+  ...(laptop.specs?.case ? [["Torre/Case", laptop.specs.case]] : []),
+  ...(laptop.specs?.cooling ? [["Refrigeración", laptop.specs.cooling]] : []),
+  // Accesorios
+  ...(laptop.specs?.material ? [["Material", laptop.specs.material]] : []),
+  ...(laptop.specs?.compatibilidad ? [["Compatibilidad", laptop.specs.compatibilidad]] : []),
+].map(([label, value]) => (
                 <div key={label} style={{ background: "#111", border: "1px solid #1f1f1f", borderRadius: "8px", padding: "0.6rem 0.8rem" }}>
                   <p style={{ color: "#555", fontSize: "0.7rem", textTransform: "uppercase", margin: "0 0 2px" }}>{label}</p>
                   <p style={{ color: "#fff", fontSize: "0.88rem", margin: 0, fontWeight: 500 }}>{value}</p>
