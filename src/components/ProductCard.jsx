@@ -44,9 +44,25 @@ export default function ProductCard({ laptop }) {
         <p style={{ color: "#666", fontSize: "0.78rem", margin: "0 0 10px", lineHeight: 1.4 }}>{laptop.description}</p>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "12px" }}>
-          <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.ram}GB RAM</span>
-          <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.ssd}GB SSD</span>
-          <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>Stock: {laptop.stock}</span>
+            {["laptops", "pcs"].includes(laptop.category_slug) && laptop.ram > 0 && (
+              <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.ram}GB RAM</span>
+            )}
+            {["laptops", "pcs"].includes(laptop.category_slug) && laptop.ssd > 0 && (
+              <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.ssd}GB SSD</span>
+            )}
+            {laptop.specs?.tamano && (
+              <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.specs.tamano}</span>
+            )}
+            {laptop.specs?.resolucion && (
+              <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.specs.resolucion}</span>
+            )}
+            {laptop.specs?.conexion && (
+              <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.specs.conexion}</span>
+            )}
+            {laptop.specs?.tipo && (
+              <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>{laptop.specs.tipo}</span>
+            )}
+            <span style={{ background: "#1a1a1a", color: "#888", padding: "3px 8px", borderRadius: "4px", fontSize: "0.7rem" }}>Stock: {laptop.stock}</span>
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

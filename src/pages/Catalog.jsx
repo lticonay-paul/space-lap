@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 
-const brands = ["Todas", "Lenovo", "HP", "ASUS", "Acer", "Dell", "Apple", "Samsung"];
+const brands = ["Todas", "Lenovo", "HP", "ASUS", "Acer", "Dell", "Apple", "Samsung", "Teros", "Logitech", "Razer", "Generic"];
 
 export default function Catalog() {
   const [laptops, setLaptops] = useState([]);

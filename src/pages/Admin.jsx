@@ -340,6 +340,24 @@ function CamposPorCategoria({ categoryId, specs = {}, onChange }) {
         </div>
       </>
     ),
+    pcs: (
+  <>
+    <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones PC</p>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+      {input("Procesador", "cpu", "Intel Core i7-13700K")}
+      {input("RAM", "ram_detalle", "32 GB DDR5")}
+      {input("Almacenamiento", "ssd_detalle", "1 TB NVMe SSD")}
+      {input("Tarjeta gráfica", "gpu", "NVIDIA RTX 4070")}
+      {input("Placa madre", "motherboard", "ASUS ROG Z790")}
+      {input("Fuente de poder", "psu", "750W 80+ Gold")}
+      {input("Sistema operativo", "os", "Windows 11 Home")}
+      {input("Torre / Case", "case", "Mid Tower ATX")}
+      {input("Color", "color", "Negro")}
+      {input("Refrigeración", "cooling", "Líquida 240mm")}
+    </div>
+  </>
+  ),
+  
     monitores: (
       <>
         <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones monitor</p>
