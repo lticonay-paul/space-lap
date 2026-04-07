@@ -39,7 +39,7 @@ export default function Admin() {
     if (!confirm(`¿Eliminar "${nombre}"?`)) return;
     try {
       await fetch(`${API}/laptops/${id}`, { method: "DELETE", headers });
-      setMensaje("Laptop eliminada correctamente");
+      setMensaje("Producto eliminado correctamente");
       cargarLaptops();
       setTimeout(() => setMensaje(""), 3000);
     } catch (err) {
@@ -166,20 +166,12 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
     name: laptop?.name || "",
     brand: laptop?.brand || "",
     price: laptop?.price || "",
-    ram: laptop?.ram || 8,
-    ssd: laptop?.ssd || 256,
     stock: laptop?.stock || 1,
     offer: laptop?.offer || false,
     image_url: laptop?.image_url || "",
     description: laptop?.description || "",
     category_id: laptop?.category_id || "",
-    specs: {
-      cpu: laptop?.specs?.cpu || "",
-      pantalla: laptop?.specs?.pantalla || "",
-      bateria: laptop?.specs?.bateria || "",
-      peso: laptop?.specs?.peso || "",
-      os: laptop?.specs?.os || "",
-    }
+    specs: laptop?.specs || {}
   });
   const [guardando, setGuardando] = useState(false);
   const [subiendo, setSubiendo] = useState(false);
@@ -215,8 +207,8 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
         body: JSON.stringify({
           ...form,
           price: Number(form.price),
-          ram: Number(form.ram),
-          ssd: Number(form.ssd),
+          ram: 0,
+          ssd: 0,
           stock: Number(form.stock),
           category_id: form.category_id ? Number(form.category_id) : null,
           specs: form.specs
@@ -253,8 +245,6 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
         <div style={{ gridColumn: "1/-1" }}>{campo("Nombre", "name")}</div>
         {campo("Marca", "brand", "text", ["Lenovo", "HP", "ASUS", "Acer", "Dell", "Apple", "Samsung", "Logitech", "Razer", "Generic"])}
         {campo("Precio (S/)", "price", "number")}
-        {campo("RAM (GB)", "ram", "text", [4, 8, 16, 32])}
-        {campo("SSD (GB)", "ssd", "text", [128, 256, 512, 1024])}
         {campo("Stock", "stock", "number")}
         <div style={{ gridColumn: "1/-1" }}>{campo("Descripción", "description")}</div>
 
@@ -265,30 +255,12 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
         </div>
       </div>
 
-      {/* Specs */}
-      <div style={{ marginBottom: "1rem" }}>
-        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones técnicas</p>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
-          {[
-            ["Procesador", "cpu", "Intel Core i5-1235U"],
-            ["Pantalla", "pantalla", "15.6 pulgadas FHD"],
-            ["Batería", "bateria", "45Wh, hasta 8 horas"],
-            ["Peso", "peso", "1.7 kg"],
-            ["Sistema operativo", "os", "Windows 11 Home"],
-          ].map(([label, key, placeholder]) => (
-            <div key={key} style={{ marginBottom: "1rem" }}>
-              <label style={{ display: "block", color: "#666", fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "6px" }}>{label}</label>
-              <input
-                type="text"
-                value={form.specs[key]}
-                placeholder={placeholder}
-                onChange={e => setForm(prev => ({ ...prev, specs: { ...prev.specs, [key]: e.target.value } }))}
-                style={{ width: "100%", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px", padding: "10px", color: "#fff", fontSize: "0.9rem", boxSizing: "border-box" }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Campos dinámicos por categoría */}
+      <CamposPorCategoria
+        categoryId={form.category_id}
+        specs={form.specs}
+        onChange={specs => setForm(prev => ({ ...prev, specs }))}
+      />
 
       {/* Oferta */}
       <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", color: "#888", fontSize: "0.85rem", marginBottom: "1.2rem" }}>
@@ -317,6 +289,139 @@ function FormularioLaptop({ laptop, token, onGuardado, onCancelar }) {
           Cancelar
         </button>
       </div>
+    </div>
+  );
+}
+
+// ─── Campos dinámicos por categoría ─────────────────────────────────────────
+function CamposPorCategoria({ categoryId, specs = {}, onChange }) {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API}/categories`)
+      .then(r => r.json())
+      .then(setCategories)
+      .catch(() => {});
+  }, []);
+
+  const cat = categories.find(c => String(c.id) === String(categoryId));
+  const slug = cat?.slug || "";
+
+  const set = (key, value) => onChange({ ...specs, [key]: value });
+
+  const input = (label, key, placeholder = "") => (
+    <div key={key} style={{ marginBottom: "1rem" }}>
+      <label style={{ display: "block", color: "#666", fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "6px" }}>{label}</label>
+      <input
+        type="text"
+        value={specs[key] || ""}
+        placeholder={placeholder}
+        onChange={e => set(key, e.target.value)}
+        style={{ width: "100%", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px", padding: "10px", color: "#fff", fontSize: "0.9rem", boxSizing: "border-box" }}
+      />
+    </div>
+  );
+
+  const camposPorSlug = {
+    laptops: (
+      <>
+        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones laptop</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+          {input("Procesador", "cpu", "Intel Core i5-1235U")}
+          {input("RAM", "ram_detalle", "16 GB DDR5")}
+          {input("Almacenamiento", "ssd_detalle", "512 GB NVMe SSD")}
+          {input("Pantalla", "pantalla", "15.6\" FHD IPS 144Hz")}
+          {input("Tarjeta gráfica", "gpu", "NVIDIA RTX 4060")}
+          {input("Batería", "bateria", "72Wh, hasta 10 horas")}
+          {input("Sistema operativo", "os", "Windows 11 Home")}
+          {input("Peso", "peso", "1.8 kg")}
+          {input("Color", "color", "Gris espacial")}
+          {input("Dimensiones", "dimensiones", "35.7 x 23.5 x 1.9 cm")}
+        </div>
+      </>
+    ),
+    monitores: (
+      <>
+        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones monitor</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+          {input("Tamaño", "tamano", "27 pulgadas")}
+          {input("Resolución", "resolucion", "2560 x 1440 QHD")}
+          {input("Panel", "panel", "IPS")}
+          {input("Frecuencia", "hz", "144 Hz")}
+          {input("Tiempo de respuesta", "respuesta", "1 ms")}
+          {input("Puertos", "puertos", "HDMI 2.0, DisplayPort 1.4")}
+          {input("Color", "color", "Negro")}
+          {input("Curvatura", "curvatura", "Plano / 1500R")}
+        </div>
+      </>
+    ),
+    mouses: (
+      <>
+        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones mouse</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+          {input("DPI máximo", "dpi", "25600 DPI")}
+          {input("Conexión", "conexion", "USB / Inalámbrico 2.4GHz")}
+          {input("Botones", "botones", "6 botones programables")}
+          {input("Color", "color", "Negro")}
+          {input("RGB", "rgb", "Sí / No")}
+          {input("Peso", "peso", "95 g")}
+          {input("Batería", "bateria", "70 horas")}
+        </div>
+      </>
+    ),
+    teclados: (
+      <>
+        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones teclado</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+          {input("Tipo", "tipo", "Mecánico / Membrana")}
+          {input("Switch", "switch", "Red / Blue / Brown")}
+          {input("Conexión", "conexion", "USB / Bluetooth")}
+          {input("Layout", "layout", "Full size / TKL / 65%")}
+          {input("RGB", "rgb", "Sí / No")}
+          {input("Color", "color", "Negro")}
+          {input("Idioma", "idioma", "Español / Inglés")}
+        </div>
+      </>
+    ),
+    auriculares: (
+      <>
+        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones auriculares</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+          {input("Tipo", "tipo", "Over-ear / On-ear / In-ear")}
+          {input("Conexión", "conexion", "USB / 3.5mm / Bluetooth")}
+          {input("Micrófono", "microfono", "Sí / No")}
+          {input("Cancelación de ruido", "anc", "Sí / No")}
+          {input("Batería", "bateria", "30 horas")}
+          {input("RGB", "rgb", "Sí / No")}
+          {input("Color", "color", "Negro")}
+        </div>
+      </>
+    ),
+    accesorios: (
+      <>
+        <p style={{ color: "#555", fontSize: "0.72rem", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 1rem" }}>Especificaciones accesorio</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem" }}>
+          {input("Material", "material", "Plástico / Aluminio / Tela")}
+          {input("Color", "color", "Negro")}
+          {input("Dimensiones", "dimensiones", "30 x 20 x 5 cm")}
+          {input("Compatibilidad", "compatibilidad", "Universal")}
+          {input("Peso", "peso", "200 g")}
+        </div>
+      </>
+    ),
+  };
+
+  if (!slug || !camposPorSlug[slug]) {
+    return (
+      <div style={{ background: "#0a0a0a", border: "1px solid #1f1f1f", borderRadius: "8px", padding: "1rem", marginBottom: "1rem" }}>
+        <p style={{ color: "#444", fontSize: "0.85rem", margin: 0 }}>Selecciona una categoría para ver los campos de especificaciones</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ background: "#0a0a0a", border: "1px solid #1f1f1f", borderRadius: "10px", padding: "1.2rem", marginBottom: "1rem" }}>
+      {camposPorSlug[slug]}
     </div>
   );
 }
